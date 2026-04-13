@@ -1,0 +1,6 @@
+status: active           # active | dormant | archived
+owner: example-author
+created: 2026-02-14      # Bootstrap-Datum, einmal setzen, nie aendern
+last-touched: 2026-04-13 # Bei jeder substanziellen Aenderung fortschreiben
+parent-zone: products    # products | capital | clients | knowledge | ops
+role: produktion

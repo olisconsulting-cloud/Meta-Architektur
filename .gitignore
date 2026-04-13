@@ -1,0 +1,12 @@
+# Skill-Config wird lokal von install.sh geschrieben, nie committen
+.config
+
+# OS-Artefakte
+.DS_Store
+Thumbs.db
+
+# Editor-Artefakte
+.vscode/
+.idea/
+*.swp
+*~

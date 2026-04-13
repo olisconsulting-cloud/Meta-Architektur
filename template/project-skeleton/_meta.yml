@@ -1,0 +1,6 @@
+status: active           # active | dormant | archived
+owner: oliver
+created: YYYY-MM-DD      # Bootstrap-Datum, einmal setzen, nie aendern
+last-touched: YYYY-MM-DD # Bei jeder substanziellen Aenderung fortschreiben (Reaping-Trigger)
+parent-zone: products    # products | capital | clients | knowledge | ops
+role: <produktion|experiment|pilot|blueprint>

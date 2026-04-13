@@ -16,16 +16,18 @@ cd Meta-Architektur
 bash install.sh
 ```
 
-Der Installer kopiert den Skill nach `~/.claude/skills/project-bootstrap/` und schreibt den Template-Pfad in die Skill-Config. Das Repo selbst bleibt liegen, wo du es klonst.
+Der Installer kopiert den Skill nach `~/.claude/skills/project-king/` und den Slash-Command nach `~/.claude/commands/project-king.md`, und schreibt den Template-Pfad in die Skill-Config. Das Repo selbst bleibt liegen, wo du es klonst.
 
 **Voraussetzungen:** Bash (unter Windows: Git Bash oder WSL), Claude Code installiert.
 
 ## Erste Nutzung
 
-In Claude Code einfach tippen:
+In Claude Code — drei Aktivierungs-Wege:
 
 ```text
-neues Projekt bootstrappen
+/project-king                     # Slash-Command (schnellster Weg)
+neues Projekt bootstrappen        # Keyword-Phrase
+nutze den project-king Skill      # explizit
 ```
 
 Der Skill fuehrt durch sechs Fragen (Name, Zone, Zweck, Task-Types, Audience, Erfolg), erzeugt den Workspace, validiert die Qualitaets-Gates. Nach zwei bis drei Minuten hast du ein vollstaendiges Trio plus `_meta.yml` plus `decisions/TEMPLATE.md`.

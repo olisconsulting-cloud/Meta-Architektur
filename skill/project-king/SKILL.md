@@ -1,9 +1,9 @@
 ---
-name: project-bootstrap
-description: Legt einen neuen Workspace nach Meta-Architektur V4 an (Drei-Datei-Architektur CLAUDE+CONTEXT+REFERENCES, _meta.yml, decisions/TEMPLATE.md). Nutze wenn der User einen neuen Workspace, ein neues Projekt, eine neue Zone oder ein neues Blueprint bootstrappen will. Triggert bei "neues Projekt", "neuer Workspace", "bootstrap", "scaffold", "neuen Ordner anlegen", "project-bootstrap", "Trio anlegen", "CLAUDE.md und CONTEXT.md fuer neues Projekt". Fuehrt durch 6 Interview-Fragen, kopiert das Template aus dem via install.sh konfigurierten Pfad, ersetzt Platzhalter live, validiert Qualitaet (Routing-Tabelle Pflicht, CLAUDE.md <50 Zeilen) und verankert Living-Document-Disziplin.
+name: project-king
+description: Legt einen neuen Workspace nach Meta-Architektur V4 an (Drei-Datei-Architektur CLAUDE+CONTEXT+REFERENCES, _meta.yml, decisions/TEMPLATE.md). Nutze wenn der User einen neuen Workspace, ein neues Projekt, eine neue Zone oder ein neues Blueprint bootstrappen will. Triggert bei "neues Projekt", "neuer Workspace", "bootstrap", "scaffold", "neuen Ordner anlegen", "project-king", "Project-King", "projekt-king", "Projekt-King", "Trio anlegen", "CLAUDE.md und CONTEXT.md fuer neues Projekt". Fuehrt durch 6 Interview-Fragen, kopiert das Template aus dem via install.sh konfigurierten Pfad, ersetzt Platzhalter live, validiert Qualitaet (Routing-Tabelle Pflicht, CLAUDE.md <50 Zeilen) und verankert Living-Document-Disziplin.
 ---
 
-# project-bootstrap — Neuer Workspace nach Meta-Architektur V4
+# Project-King — Neuer Workspace nach Meta-Architektur V4
 
 Dieser Skill bootstrappt einen neuen Workspace nach der Meta-Architektur:
 Drei-Datei-Trio (CLAUDE.md Router, CONTEXT.md Arbeit, REFERENCES.md Tiefe) plus
@@ -25,7 +25,7 @@ der User kann nicht weitermachen ohne Substanz.
 ## Template-Pfad auflösen
 
 Der Skill liest zu Beginn die Datei `.config` im eigenen Skill-Ordner
-(`~/.claude/skills/project-bootstrap/.config`). Dort steht die Variable:
+(`~/.claude/skills/project-king/.config`). Dort steht die Variable:
 
 ```
 META_ARCH_TEMPLATE_PATH=<absoluter-pfad>/template/project-skeleton
@@ -187,7 +187,7 @@ Task-Type braucht oft keine eigene CLAUDE.md — ueberleg noch mal ob's 2-3 gibt
 
 _Lern-Modus-Haeppchen (nur bei `learn_mode=true`):_
 > "Audience treibt Tiefe, Vokabular, Annahmen — ohne Audience schreibt Claude
-> generisch. Details: `skill/project-bootstrap/references/bootstrap-questions.md`
+> generisch. Details: `skill/project-king/references/bootstrap-questions.md`
 > Abschnitt _5. Audience_."
 
 > "Wer arbeitet hier? Primaer (du), sekundaer (Claude), tertiaer (wer noch —
@@ -199,7 +199,7 @@ Validierung: mindestens 2 Ebenen (primaer + sekundaer).
 
 _Lern-Modus-Haeppchen (nur bei `learn_mode=true`):_
 > "Kriterium muss in 3 Monaten mit Ja/Nein beantwortbar sein — sonst ist es
-> Wunsch, nicht Kriterium. Details: `skill/project-bootstrap/references/bootstrap-questions.md`
+> Wunsch, nicht Kriterium. Details: `skill/project-king/references/bootstrap-questions.md`
 > Abschnitt _6. Erfolgskriterien_."
 
 > "Woran erkennst du in 3 Monaten, dass dieser Workspace funktioniert? 2-3

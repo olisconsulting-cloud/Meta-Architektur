@@ -30,6 +30,8 @@ neues Projekt bootstrappen
 
 Der Skill fuehrt durch sechs Fragen (Name, Zone, Zweck, Task-Types, Audience, Erfolg), erzeugt den Workspace, validiert die Qualitaets-Gates. Nach zwei bis drei Minuten hast du ein vollstaendiges Trio plus `_meta.yml` plus `decisions/TEMPLATE.md`.
 
+Wenn du die Meta-Architektur noch nicht kennst, antworte auf die zweite Frage in Phase 0 mit `erklaere` — dann fuehrt dich der Skill durch die Prinzipien mit einem Satz Kontext pro Frage, ohne Extra-Fragen.
+
 ## Konzept in einer Minute
 
 **Drei Schichten:**

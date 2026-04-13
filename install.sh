@@ -93,4 +93,34 @@ echo "  1. /project-king           (Slash-Command)"
 echo "  2. 'neues Projekt bootstrappen'  (Keyword-Phrase)"
 echo "  3. 'nutze den project-king Skill' (explizit)"
 echo ""
+
+# GSD (Get Shit Done) — Roadmap-System, empfohlener Partner fuer project-king
+# Quelle: https://github.com/gsd-build/get-shit-done (MIT-Lizenz)
+echo "=== GSD (Get Shit Done) — Roadmap-System ==="
+echo ""
+echo "GSD ergaenzt project-king: nach dem Workspace-Bootstrap hilft GSD bei"
+echo "Requirements, Phasen und Roadmap. Offizieller Installer vom Hersteller."
+echo ""
+read -r -p "GSD jetzt zusaetzlich installieren? (j/n, default j): " gsd_answer
+gsd_answer="${gsd_answer:-j}"
+
+if [ "$gsd_answer" = "j" ] || [ "$gsd_answer" = "ja" ] || [ "$gsd_answer" = "y" ] || [ "$gsd_answer" = "yes" ]; then
+  if ! command -v npx >/dev/null 2>&1; then
+    echo "HINWEIS: npx nicht gefunden — Node.js/npm noetig fuer GSD-Installation."
+    echo "         project-king ist trotzdem fertig installiert."
+    echo "         GSD spaeter manuell: npx get-shit-done-cc@latest --claude --global"
+  else
+    echo "Installiere GSD via offiziellem Installer..."
+    if npx -y get-shit-done-cc@latest --claude --global; then
+      echo "OK GSD installiert."
+    else
+      echo "HINWEIS: GSD-Installation fehlgeschlagen. project-king ist trotzdem fertig."
+      echo "         GSD spaeter manuell: npx get-shit-done-cc@latest --claude --global"
+    fi
+  fi
+else
+  echo "GSD uebersprungen. Spaeter manuell: npx get-shit-done-cc@latest --claude --global"
+fi
+
+echo ""
 echo "Dokumentation: $REPO_ROOT/README.md"

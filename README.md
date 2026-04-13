@@ -18,7 +18,9 @@ bash install.sh
 
 Der Installer kopiert den Skill nach `~/.claude/skills/project-king/` und den Slash-Command nach `~/.claude/commands/project-king.md`, und schreibt den Template-Pfad in die Skill-Config. Das Repo selbst bleibt liegen, wo du es klonst.
 
-**Voraussetzungen:** Bash (unter Windows: Git Bash oder WSL), Claude Code installiert.
+Am Ende fragt der Installer, ob auch **GSD (Get Shit Done)** installiert werden soll — das ist ein unabhaengiges Roadmap-System ([gsd-build/get-shit-done](https://github.com/gsd-build/get-shit-done), MIT-Lizenz). GSD wird nicht kopiert, sondern per offiziellem Installer vom Hersteller geholt (immer die aktuellste Version). project-king baut den Workspace, GSD baut den Plan — saubere Arbeitsteilung.
+
+**Voraussetzungen:** Bash (unter Windows: Git Bash oder WSL), Claude Code installiert. Fuer GSD zusaetzlich: Node.js/npm.
 
 ## Erste Nutzung
 

@@ -38,6 +38,34 @@ Falls `.config` fehlt oder die Variable leer ist: STOPP. Fehlermeldung:
 
 ## Workflow
 
+### Phase 0: Ausgangslage klaeren
+
+Bevor das Interview startet, frage:
+
+> "Ist das ein **komplett neuer Workspace** oder ein **bestehendes Projekt**,
+> das du nach Meta-Architektur strukturieren willst?"
+
+**Bei "neu":** Weiter zu Phase 1 wie bisher — Template wird in neuen Ordner kopiert.
+
+**Bei "bestehend":** Migrations-Modus aktivieren. Sage:
+
+> "Okay, Migrations-Modus. Ich stelle dir die gleichen 6 Standard-Fragen,
+> aber statt Template zu kopieren schreibe ich die drei Kern-Dateien
+> (CLAUDE.md + CONTEXT.md + REFERENCES.md) plus _meta.yml direkt in
+> deinen bestehenden Ordner. Bestehende Files (src/, tests/, package.json,
+> etc.) bleiben unangetastet. `decisions/TEMPLATE.md` wird nur angelegt
+> wenn noch kein `decisions/`-Ordner existiert.
+>
+> Wo liegt dein Projekt-Ordner (absoluter Pfad)?"
+
+Dann Phase 1 bis Phase 5 wie normal durchlaufen, mit zwei Unterschieden in Phase 3:
+
+- Ziel-Ordner NICHT neu anlegen (existiert bereits)
+- Pro Ziel-File (CLAUDE.md, CONTEXT.md, REFERENCES.md, _meta.yml) pruefen ob
+  bereits vorhanden. Falls ja: STOPP, Frage: "Datei <name> existiert bereits.
+  Ueberschreiben, ergaenzen, oder abbrechen?" Keine stumme Ueberschreibung.
+- `decisions/TEMPLATE.md` nur kopieren wenn `decisions/` fehlt.
+
 ### Phase 1: Interview (6 Fragen)
 
 Stelle diese Fragen EINZELN und warte jeweils auf Antwort. Keine Batches.
@@ -54,11 +82,35 @@ Bei Verletzung: "Bitte kebab-case: [konkreter Gegenvorschlag]."
 > Blueprints, Stack, Libs), clients (Kundenprojekte), knowledge (Destilliertes), ops
 > (Tooling, Templates, Chronicle). Was passt?"
 
+Gotchas pro Zone (inline zeigen wenn User unsicher ist):
+
+- **products/**: `_lab/`-Experimente haben 30-Tage-Halbwertszeit. Bewaehrte Experimente werden per Umbenennen zu products, nicht per Zonen-Wechsel.
+- **capital/**: Blueprint LEHRT, Stack TESTET, Lib WIRD WIEDERVERWENDET — nicht verwechseln.
+- **clients/**: Jeder Klient eigenen Ordner, nie Context-Bleed.
+- **knowledge/**: Nur Destilliertes, kein Rohmaterial.
+- **ops/**: Nur Tools die fuer ALLE Workspaces relevant sind, nicht fuer EINEN.
+
 Validierung: muss eine der 5 sein. Ausnahme: Top-Level-Projekt das eine neue Zone
 rechtfertigt → ADR anlegen lassen, nicht einfach durchwinken.
 
 **3. Zweck (2-3 Saetze)**
 > "In 2-3 Saetzen: Was tut dieser Workspace? Welches Problem loest er?"
+
+Beispiele:
+
+Gut:
+> "Blog-Plattform fuer Technik-Schreiber. Loest das Problem schlechter
+> Markdown-Editor-Experience. Stack: Next.js + MDX + Postgres."
+
+Gut (andere Domain):
+> "Voice-Agent fuer Telefonie im Kundenservice. Loest Erreichbarkeit
+> 24/7 bei kleinen Dienstleistern. Hume EVI + Twilio + n8n."
+
+Zu knapp:
+> "Eine Blog-Plattform."
+
+Falsch fokussiert (beschreibt Claude, nicht die Arbeit):
+> "Claude soll hier kreativ Blog-Features bauen."
 
 Validierung: Antwort mindestens 40 Zeichen UND enthaelt mindestens ein Verb.
 Bei zu kurz: "Das ist zu knapp — formuliere das konkrete Problem und den Loesungsansatz."
@@ -66,8 +118,25 @@ Bei zu kurz: "Das ist zu knapp — formuliere das konkrete Problem und den Loesu
 **4. Primaere Task-Types (2-3)**
 > "Nenne 2-3 typische Tasks, die hier stattfinden werden. Daraus baue ich die
 > Routing-Tabelle. Format: 'Task-Name | Wo findet es statt | Welche Datei'.
-> Beispiel: 'Bug fixen | src/ | CONTEXT.md'. Eine der Zeilen darf auch auf
-> REFERENCES.md zeigen (externe Quellen nachschlagen)."
+> Eine der Zeilen darf auch auf REFERENCES.md zeigen (externe Quellen
+> nachschlagen)."
+
+Beispiele:
+
+Gut:
+
+```
+| Blog-Post schreiben  | content/ | CONTEXT.md    | post.mdx |
+| Theme anpassen       | theme/   | CONTEXT.md    | —        |
+| Externe Docs pruefen | .        | REFERENCES.md | —        |
+```
+
+Schlecht (zu vage):
+
+```
+| Arbeit an Blog       | .        | CONTEXT.md    | — |
+| Andere Arbeit        | .        | CONTEXT.md    | — |
+```
 
 Validierung: mindestens 2 Eintraege. Bei 1 Task: "Ein Workspace mit nur einem
 Task-Type braucht oft keine eigene CLAUDE.md — ueberleg noch mal ob's 2-3 gibt."
@@ -81,6 +150,17 @@ Validierung: mindestens 2 Ebenen (primaer + sekundaer).
 **6. Erfolgskriterien (2-3 Bullets)**
 > "Woran erkennst du in 3 Monaten, dass dieser Workspace funktioniert? 2-3
 > konkrete, wenn moeglich messbare Kriterien. Keine Wunschzettel."
+
+Beispiele:
+
+Gut (konkret, messbar):
+- "Drei Live-Autoren veroeffentlichen regelmaessig ohne manuelle Hilfe."
+- "Build-Zeit unter 30s bei 500 Posts."
+- "Onboarding neuer Autoren in unter 1h."
+
+Wunschzettel (schlecht):
+- "Blog ist richtig gut."
+- "Autoren sind zufrieden."
 
 Validierung: mindestens 2 Eintraege.
 
@@ -143,7 +223,7 @@ Bei Fehlschlag: zeige konkrete Stelle + Fix-Vorschlag. Nicht stumm weitergehen.
 
 ### Phase 5: Abschluss-Ritual
 
-Gib dem User exakt diese drei Ausgaben:
+Gib dem User exakt diese vier Ausgaben:
 
 1. **Pfad-Confirmation:** `Workspace angelegt: <absoluter-pfad>`
 2. **Optional ADR-Trigger:** "Willst du jetzt eine erste ADR schreiben, warum
@@ -153,6 +233,12 @@ Gib dem User exakt diese drei Ausgaben:
    > "Erinnerung: CONTEXT.md nach jeder signifikanten Entscheidung live updaten —
    > das ist der 'highest-leverage habit' nach Skool. Stand und naechster Schritt
    > altern sonst still."
+4. **Drei konkrete naechste Schritte:**
+   > "Dein Workspace ist bereit. Drei Schritte fuer den Einstieg:
+   >
+   > 1. Oeffne CONTEXT.md und schreibe in 'Aktueller Stand' den ersten echten Satz.
+   > 2. Erster Commit: `git add . && git commit -m 'init: <name>'`
+   > 3. Starte mit dem ersten Task aus der Routing-Tabelle."
 
 ## Anti-Patterns (vermeiden)
 

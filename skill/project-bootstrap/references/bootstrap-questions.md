@@ -1,12 +1,12 @@
 # Bootstrap-Interview — Referenz-Script
 
 Nur lesen wenn der User oder Claude zwischen den Fragen einen Detail-Hintergrund
-braucht (z.B. "warum 5 Zonen?", "was ist Routing-Tabelle?"). Sonst folgt Claude
-direkt SKILL.md Phase 1.
+braucht (z.B. "warum 5 Zonen?", "warum kebab-case?"). Gut/Schlecht-Beispiele
+liegen direkt in SKILL.md bei den jeweiligen Fragen, nicht hier.
 
 ## Frage-Kontexte
 
-### 1. Projekt-Name
+### 1. Projekt-Name — Konvention
 
 **Warum kebab-case?** Plan V4 Naming-Konvention: kebab-case, ASCII-only,
 max 3 Woerter, Englisch generisch, Muttersprache nur fuer Eigennamen.
@@ -15,65 +15,62 @@ max 3 Woerter, Englisch generisch, Muttersprache nur fuer Eigennamen.
 `_lab/` (Experimente), `_meta.yml` (Telemetrie). Normale Workspaces haben keinen
 Underscore-Prefix.
 
-### 2. Zone — Details
+### 2. Zone — tiefe Details
+
+Die 5 Gotchas pro Zone liegen direkt in SKILL.md Frage 2. Hier nur tiefergehend:
 
 - **products/** — Ausgeliefertes, inkl. `_lab/<experiment>/` fuer Proto-Produkte.
   Bewaehrte Experimente wandern durch Umbenennen, nicht Zonen-Wechsel.
-- **capital/** — Wiederverwendbares: Blueprints (Muster zum Verstehen), Stack
-  (konfigurierte Werkzeugketten), Libs (geteilter Code).
-- **clients/** — Kundenprojekte. Eigene Ordner pro Engagement.
-- **knowledge/** — Destilliertes Wissen, Frameworks, Metadocs.
-- **ops/** — Tooling, Templates, Chronicle, Reaping-Scripts.
+  30-Tage-Halbwertszeit-Regel in `_lab/` ist Praevention, nicht Buerokratie.
+- **capital/** — Wiederverwendbares:
+  - **Blueprint** = Muster zum Verstehen ("Auth-Flow erklaert")
+  - **Stack** = konfigurierte Werkzeugkette ("Next+Tailwind+shadcn-Setup")
+  - **Lib** = geteilter Code (Shared Types, Utility-Funktionen)
+- **clients/** — Kundenprojekte. Eigene Ordner pro Engagement. Context-Bleed
+  zwischen Clients verhindern.
+- **knowledge/** — Destilliertes Wissen, Frameworks, Metadocs. Rohmaterial
+  gehoert NICHT hier (erst verdichten).
+- **ops/** — Tooling, Templates, Chronicle, Reaping-Scripts. Nur was fuer ALLE
+  Workspaces relevant ist, nicht fuer EINEN.
 
 **Wann neue Zone statt einer der 5?** Nie leichtfertig. Neue Zone = ADR-pflichtig,
 weil sie das Kern-Modell erweitert.
 
-### 3. Zweck — was gilt als gut
+### 3. Zweck — Warum konkret
 
-Zu knapp: "Eine Blog-Plattform."
-Ausreichend: "Blog-Plattform fuer Technik-Schreiber. Loest das Problem,
-dass viele Autoren an Wordpress verzweifeln und Markdown bevorzugen.
-Stack: Next.js, MDX, Postgres."
+Skool-Prinzip (Lektion 3.3, Fehler #4): *"Context about the work (audience,
+constraints, completed work, success criteria) changes output far more than
+personality instructions."*
 
-Schlecht weil Claude-fokussiert: "Claude soll hier kreativ Blog-Features bauen."
-(Skool-Fehler #4 — Context beschreibt Claude, nicht die Arbeit.)
+Zweck muss die Arbeit beschreiben, nicht Claudes Rolle. Gut/Schlecht-Beispiele
+in SKILL.md.
 
 ### 4. Task-Types — Schema
 
 Jeder Task-Type ergibt eine Routing-Tabellen-Zeile mit Format:
+
 ```
 | <Task-Type> | <Location> | <Context-File> | <Artefakt> |
 ```
 
-Beispiele:
-```
-| Blog-Post schreiben  | content/ | CONTEXT.md | post.mdx |
-| Theme-Arbeit         | theme/   | CONTEXT.md | — |
-| Externe Docs lesen   | .        | REFERENCES.md | — |
-```
+Beispiele in SKILL.md. Kern-Regel: pro Task klar sein wo er stattfindet und
+welche Datei Kontext liefert. Vage Task-Types fuehren zu vage Routing-Entscheidungen.
 
 ### 5. Audience — Warum wichtig
 
-Skool-Zitat (Lektion 3.3, Fehler #4): *"Context about the work (audience,
-constraints, completed work, success criteria) changes output far more than
-personality instructions."*
+Skool-Zitat: *"Context about the work (audience, constraints, completed work,
+success criteria) changes output far more than personality instructions."*
 
 Audience-Antwort treibt Tiefe, Vokabular, Annahmen. Ohne Audience schreibt
 Claude generisch.
 
 ### 6. Erfolgskriterien — Muster
 
-Gut (konkret, oft messbar):
-- "Drei Live-Autoren veroeffentlichen regelmaessig ohne manuelle Hilfe."
-- "Build-Zeit unter 30s bei 500 Posts."
-- "Onboarding neuer Autoren in unter 1h."
+Kern-Unterscheidung: konkret/messbar vs. Wunschzettel. Gut/Schlecht-Beispiele
+in SKILL.md. Faustregel: Wenn Kriterium in 3 Monaten nicht mit Ja/Nein
+beantwortbar ist, ist es Wunsch, nicht Kriterium.
 
-Schlecht (Wunschzettel):
-- "Der Blog ist richtig gut."
-- "Autoren sind zufrieden."
-- "Wir lernen viel."
-
-## Zone-Spezifische Hinweise
+## Zone-Spezifische Zusatz-Hinweise
 
 **Bei `capital/`:** Frage zusaetzlich: "Blueprint, Stack oder Lib?" → bestimmt
 interne Unterordner-Struktur (wird NICHT durch Skill vorab angelegt, nur
@@ -86,6 +83,8 @@ dokumentiert in CONTEXT.md).
 
 Skill muss abbrechen mit klarer Meldung, wenn:
 
-- Zielordner existiert bereits (Schroedinger-Ordner vermeiden)
+- Zielordner existiert bereits **und** Phase 0 war "neu" (im Migrations-Modus
+  aus Phase 0 ist existierender Ordner erwartet)
 - User will mehr als 1 Workspace auf einmal bootstrappen (ein Task pro Run)
-- Template-Pfad (`META_ARCH_TEMPLATE_PATH`) ist leer oder zeigt auf nicht-existenten Ordner
+- Template-Pfad (`META_ARCH_TEMPLATE_PATH`) ist leer oder zeigt auf
+  nicht-existenten Ordner

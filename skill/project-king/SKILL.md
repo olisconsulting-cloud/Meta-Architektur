@@ -301,6 +301,13 @@ Gib dem User exakt diese vier Ausgaben:
    > Nicht Pflicht — das Template ist prinzipien-konform. Nur wenn du
    > nach Anpassungen auf Nummer sicher gehen willst."
 
+6. **Optionaler Roadmap-Start:**
+   > "Brauchst du jetzt einen Fahrplan fuer das Projekt — Requirements,
+   > Phasen, Success Criteria? Dann `/gsd:new-project` starten. Das
+   > ist ein separates System mit Roadmap + optionaler Domain-Research.
+   > Nicht Pflicht — nur wenn das Projekt Planungs-Tiefe braucht, nicht
+   > bei schlanken Experimenten."
+
 ## Anti-Patterns (vermeiden)
 
 - **Platzhalter stehenlassen.** Jeder `<...>`-Platzhalter muss ersetzt oder die

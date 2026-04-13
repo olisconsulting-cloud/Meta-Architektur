@@ -22,11 +22,12 @@ Der Installer kopiert den Skill nach `~/.claude/skills/project-king/` und den Sl
 
 ## Erste Nutzung
 
-In Claude Code — drei Aktivierungs-Wege:
+In Claude Code — vier Aktivierungs-Wege:
 
 ```text
 /project-king                     # Slash-Command (schnellster Weg)
 neues Projekt bootstrappen        # Keyword-Phrase
+neues project-king Projekt        # Name-Phrase
 nutze den project-king Skill      # explizit
 ```
 

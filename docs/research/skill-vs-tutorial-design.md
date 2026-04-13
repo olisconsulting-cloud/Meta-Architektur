@@ -2,6 +2,10 @@
 
 Datum: 2026-04-13 | Status: Design-Vorschlaege, keine Umsetzung entschieden
 
+> **Namens-Hinweis:** Der Skill wurde am 2026-04-13 zu `project-king` umbenannt.
+> Dieses Research-Dokument nennt noch den alten Namen `project-bootstrap` als
+> Zeitpunkt-Snapshot. Inhalt gilt unveraendert fuer `project-king`.
+
 ## Frage
 
 Der `project-bootstrap` Skill hat heute 6 Interview-Fragen (Name, Zone, Zweck, Task-Types, Audience, Erfolg) — klar, effizient, ca. 3 Minuten. Oliver ueberlegt: soll der Skill zu einem A-bis-Z-Schulungs-Prozess erweitert werden, der nebenbei die Meta-Architektur-Prinzipien lehrt?

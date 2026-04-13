@@ -2,6 +2,9 @@
 
 Datum: 2026-04-13 | Status: accepted | Superseded by: —
 
+> **Namens-Hinweis:** Der hier als `project-bootstrap` referenzierte Skill
+> heisst seit Commit `7d600ce` (2026-04-13) `project-king`. Inhalt unveraendert.
+
 ## Kontext
 
 Der Skill `project-bootstrap` hat heute 6 Fragen in Phase 1 (Name, Zone, Zweck, Task-Types, Audience, Erfolg). Das Interview ist effizient (~3 Min), erzeugt produktionsreife Workspaces und blockt Skool-Fehler #7 ("komplettes System bauen bevor nutzen") strukturell.

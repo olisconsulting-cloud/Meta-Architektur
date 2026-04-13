@@ -2,6 +2,10 @@
 
 Datum: 2026-04-13 | Status: Analyse, keine Umsetzung entschieden
 
+> **Namens-Hinweis:** Der Skill wurde am 2026-04-13 zu `project-king` umbenannt.
+> Dieses Research-Dokument nennt noch den alten Namen `project-bootstrap` als
+> Zeitpunkt-Snapshot. Inhalt gilt unveraendert fuer `project-king`.
+
 ## Frage
 
 Sollten `project-bootstrap` (legt neue Workspaces an) und `/claudemd-optimize` (reviewed bestehende CLAUDE.md) verbunden werden — und wenn ja, wie?

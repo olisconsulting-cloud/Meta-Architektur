@@ -50,25 +50,18 @@ fi
 
 mkdir -p "$CLAUDE_HOME/skills" "$CLAUDE_HOME/commands"
 
-# Legacy-Cleanup (alter Skill-Name aus v1/v2)
+# Legacy-Cleanup (alter Skill-Name aus v1/v2 — idempotent, silent)
+LEGACY_REMOVED=0
 if [ -d "$LEGACY_SKILL" ]; then
-  echo "HINWEIS: Alter Skill 'project-bootstrap' gefunden unter $LEGACY_SKILL"
-  read -r -p "Entfernen? (j/n) " legacy_answer
-  if [ "$legacy_answer" = "j" ] || [ "$legacy_answer" = "ja" ] || [ "$legacy_answer" = "y" ] || [ "$legacy_answer" = "yes" ]; then
-    rm -rf "$LEGACY_SKILL"
-    echo "OK Legacy-Skill entfernt."
-  fi
+  rm -rf "$LEGACY_SKILL"
+  LEGACY_REMOVED=1
 fi
 
-# Skill-Ueberschreibungs-Frage
+# Skill-Update: bestehende Installation sichern (zeitstempel-Backup)
+BACKUP_DEST=""
 if [ -d "$SKILL_DEST" ]; then
-  echo "HINWEIS: Skill existiert bereits unter $SKILL_DEST"
-  read -r -p "Ueberschreiben? (j/n) " answer
-  if [ "$answer" != "j" ] && [ "$answer" != "ja" ] && [ "$answer" != "y" ] && [ "$answer" != "yes" ]; then
-    echo "Abbruch — nichts veraendert."
-    exit 0
-  fi
-  rm -rf "$SKILL_DEST"
+  BACKUP_DEST="$SKILL_DEST.bak.$(date +%Y%m%d-%H%M%S)"
+  mv "$SKILL_DEST" "$BACKUP_DEST"
 fi
 
 # Skill kopieren
@@ -87,6 +80,13 @@ echo ""
 echo "OK Skill installiert:   $SKILL_DEST"
 echo "OK Command installiert: $COMMAND_DEST"
 echo "OK Template-Pfad:       $TEMPLATE_SRC"
+if [ "$LEGACY_REMOVED" = "1" ]; then
+  echo "OK Legacy-Skill 'project-bootstrap' entfernt"
+fi
+if [ -n "$BACKUP_DEST" ]; then
+  echo "OK Vorheriger Skill gesichert: $BACKUP_DEST"
+  echo "   (Alte Backups bei Bedarf loeschen: rm -rf $SKILL_DEST.bak.*)"
+fi
 echo ""
 echo "Aktivierung auf drei Wegen:"
 echo "  1. /project-king           (Slash-Command)"

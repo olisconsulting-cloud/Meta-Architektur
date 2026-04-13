@@ -2,6 +2,9 @@
 
 Datum: 2026-04-13 | Status: accepted | Superseded by: —
 
+> **Namens-Hinweis:** Der hier als `project-bootstrap` referenzierte Skill
+> heisst seit Commit `7d600ce` (2026-04-13) `project-king`. Inhalt unveraendert.
+
 ## Kontext
 
 Der Skill `project-bootstrap` erzeugt neue Workspaces nach Meta-Architektur V4. Parallel existiert der Slash-Command `/claudemd-optimize` (global in `~/.claude/commands/`), der CLAUDE.md-Files gegen 8 Prinzipien reviewt (Accuracy-Zonen, Redundanz, Sprach-Konsistenz, Gap-Check) und priorisierte Verbesserungs-Vorschlaege liefert — ohne Auto-Fix.

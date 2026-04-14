@@ -1,6 +1,6 @@
 ---
 name: project-king
-description: Legt einen neuen Workspace nach Meta-Architektur V4 an (Drei-Datei-Architektur CLAUDE+CONTEXT+REFERENCES, _meta.yml, decisions/TEMPLATE.md). Nutze wenn der User einen neuen Workspace, ein neues Projekt, eine neue Zone oder ein neues Blueprint bootstrappen will. Triggert bei "neues Projekt", "neuer Workspace", "bootstrap", "scaffold", "neuen Ordner anlegen", "project-king", "Project-King", "projekt-king", "Projekt-King", "Trio anlegen", "CLAUDE.md und CONTEXT.md fuer neues Projekt". Fuehrt durch 6 Interview-Fragen, kopiert das Template aus dem via install.sh konfigurierten Pfad, ersetzt Platzhalter live, validiert Qualitaet (Routing-Tabelle Pflicht, CLAUDE.md <50 Zeilen) und verankert Living-Document-Disziplin.
+description: Legt einen neuen Workspace nach Meta-Architektur V4 an (Drei-Datei-Architektur CLAUDE+CONTEXT+REFERENCES, _meta.yml, decisions/TEMPLATE.md) und leitet projektspezifische Unterordner intelligent aus Zweck+Tasks+Audience ab. Nutze wenn der User einen neuen Workspace, ein neues Projekt, eine neue Zone oder ein neues Blueprint bootstrappen will. Triggert bei "neues Projekt", "neuer Workspace", "bootstrap", "scaffold", "neuen Ordner anlegen", "project-king", "Project-King", "projekt-king", "Projekt-King", "Trio anlegen", "CLAUDE.md und CONTEXT.md fuer neues Projekt". Fuehrt durch 6 Interview-Fragen, synthetisiert aus den Antworten die Unterordner-Struktur (User nennt keine Ordner selbst), kopiert das Template aus dem via install.sh konfigurierten Pfad, ersetzt Platzhalter live, legt die abgeleiteten Unterordner physisch an, validiert Qualitaet (Routing-Tabelle Pflicht, CLAUDE.md <50 Zeilen) und verankert Living-Document-Disziplin.
 ---
 
 # Project-King — Neuer Workspace nach Meta-Architektur V4
@@ -152,36 +152,33 @@ Falsch fokussiert (beschreibt Claude, nicht die Arbeit):
 Validierung: Antwort mindestens 40 Zeichen UND enthaelt mindestens ein Verb.
 Bei zu kurz: "Das ist zu knapp — formuliere das konkrete Problem und den Loesungsansatz."
 
-**4. Primaere Task-Types (2-3)**
+**4. Primaere Tasks (2-4)**
 
 _Lern-Modus-Haeppchen (nur bei `learn_mode=true`):_
-> "Die Routing-Tabelle ist Pflicht — ohne sie raet Claude (Skool-Fehler #2).
+> "Tasks treiben die Struktur — aus ihnen leitet der Skill die Unterordner ab.
 > Details: `docs/plan-v4.md` Abschnitt _Die Pflicht-Routing-Tabelle_."
 
-> "Nenne 2-3 typische Tasks, die hier stattfinden werden. Daraus baue ich die
-> Routing-Tabelle. Format: 'Task-Name | Wo findet es statt | Welche Datei'.
-> Eine der Zeilen darf auch auf REFERENCES.md zeigen (externe Quellen
-> nachschlagen)."
+> "Nenne 2-4 konkrete Tasks, die in diesem Workspace regelmaessig stattfinden.
+> NUR den Task-Namen — keine Ordner, keine Dateien. Die Struktur leite ich
+> spaeter selbst aus deinen Antworten ab."
 
 Beispiele:
 
-Gut:
-
-```
-| Blog-Post schreiben  | content/ | CONTEXT.md    | post.mdx |
-| Theme anpassen       | theme/   | CONTEXT.md    | —        |
-| Externe Docs pruefen | .        | REFERENCES.md | —        |
-```
+Gut (konkrete Verben, klarer Gegenstand):
+- "Blog-Posts schreiben"
+- "Theme anpassen"
+- "Voice-Prompts pflegen"
+- "Email-Kampagnen bauen"
+- "Kundendaten verwalten"
 
 Schlecht (zu vage):
+- "Arbeit am Blog"
+- "Diverses"
+- "Code schreiben"
 
-```
-| Arbeit an Blog       | .        | CONTEXT.md    | — |
-| Andere Arbeit        | .        | CONTEXT.md    | — |
-```
-
-Validierung: mindestens 2 Eintraege. Bei 1 Task: "Ein Workspace mit nur einem
-Task-Type braucht oft keine eigene CLAUDE.md — ueberleg noch mal ob's 2-3 gibt."
+Validierung: mindestens 2 Eintraege, jeder mit Verb + Objekt. Bei 1 Task: "Ein
+Workspace mit nur einem Task-Type braucht oft keine eigene CLAUDE.md — ueberleg
+noch mal ob's 2-4 gibt."
 
 **5. Audience**
 
@@ -218,6 +215,75 @@ Wunschzettel (schlecht):
 
 Validierung: mindestens 2 Eintraege.
 
+### Phase 1.5: Intelligente Struktur-Ableitung
+
+Nach den 6 Fragen synthetisiert der Skill aus Zweck (Frage 3), Tasks (Frage 4)
+und Audience (Frage 5) die passende Unterordner-Struktur plus Routing-Tabelle.
+**Der User definiert keine Ordner — der Skill leitet sie ab.**
+
+**Ableitungs-Regeln:**
+
+1. **Pro Task einen Kandidat-Unterordner** ableiten. Ordner-Name = kebab-case des
+   Task-Gegenstands (nicht des Verbs). Beispiele:
+   - "Blog-Posts schreiben" → `content/`
+   - "Theme anpassen" → `theme/`
+   - "Voice-Prompts pflegen" → `prompts/`
+   - "Email-Kampagnen bauen" → `email/`
+   - "Kundendaten verwalten" → `kundendaten/`
+   - "SEO-Audits durchfuehren" → `audits/`
+
+2. **Domain-Signale aus dem Zweck** ergaenzen typische Begleitordner:
+   - Zweck enthaelt "Voice/Call/Phone" → ergaenze `config/` (API-Keys, Voice-IDs)
+   - Zweck enthaelt "Landing Page/Marketing" → ergaenze `assets/` (Bilder, Logos)
+   - Zweck enthaelt "Kunde/Client" → ergaenze `briefing/` (Vertrag, Anforderungen)
+   - Zweck enthaelt "Data/Pipeline/ETL" → ergaenze `schemas/` (Datenmodelle)
+   - Zweck enthaelt "API/Backend/Service" → ergaenze `src/` + `tests/`
+
+3. **Dedupe + Konsolidieren:** Wenn zwei Tasks auf den gleichen Ordner zeigen
+   wuerden, einen Ordner — beide Tasks in der Routing-Tabelle listen.
+   Maximum 6 Unterordner. Wenn mehr abgeleitet wurden: die 2 aehnlichsten
+   zusammenlegen.
+
+4. **Wenn keine sinnvolle Ableitung moeglich** (Zweck zu abstrakt, Tasks zu
+   generisch): STOPP und konkret nachfragen, nicht raten. Bsp: "Aus deinem
+   Zweck 'Produktivitaets-Tool' kann ich keine Struktur ableiten. Nenne mir
+   bitte einen Beispiel-Task konkret: was genau tust du am Montagmorgen hier?"
+
+**Routing-Tabelle bauen:**
+
+Fuer jeden Task eine Zeile generieren:
+- Task-Name (aus Frage 4 uebernommen)
+- Location (abgeleiteter Unterordner)
+- Context (CONTEXT.md als Default, REFERENCES.md wenn Task "extern nachschlagen" ist)
+- Artefakt (typischer Dateiname im Ordner — z.B. `post.mdx` fuer Blog, `prompt.txt`
+  fuer Voice, `—` wenn nicht sinnvoll)
+
+**Vorschlag zeigen:**
+
+```
+VORGESCHLAGENE STRUKTUR (abgeleitet aus deinen Antworten)
+
+Unterordner:
+  - content/    (fuer "Blog-Posts schreiben")
+  - theme/      (fuer "Theme anpassen")
+  - assets/     (Standardordner fuer Marketing-Projekte)
+
+Routing-Tabelle:
+| Task-Name           | Location  | Context       | Artefakt |
+| Blog-Posts schreiben| content/  | CONTEXT.md    | post.mdx |
+| Theme anpassen      | theme/    | CONTEXT.md    | —        |
+| Externe Docs pruefen| .         | REFERENCES.md | —        |
+
+Passt das? (j / anpassen / neu)
+- j: uebernehmen
+- anpassen: sag was geaendert werden soll (z.B. "content heisst posts", "assets weg")
+- neu: ich frage dich gezielter und leite nochmal ab
+```
+
+Bei `anpassen`: User nennt Aenderung in Prosa, Skill passt an und zeigt erneut.
+Bei `neu`: Skill fragt konkreter nach den Tasks oder Zweck, leitet dann neu ab.
+Bei `j`: weiter zu Phase 2.
+
 ### Phase 2: Bestaetigung vor Write
 
 Zeige dem User eine Zusammenfassung in Tabellen-Form:
@@ -230,7 +296,8 @@ Zielort:       <zone>/<name>/
 Zweck:         <zweck>
 Audience:      <audience>
 Erfolg:        <erfolg>
-Routing:       <2-3 task-types>
+Unterordner:   <aus Phase 1.5 abgeleitet, kommasepariert>
+Routing:       <2-4 task-types mit Location>
 
 Anlegen mit diesen Werten? (j/n)
 ```
@@ -261,6 +328,12 @@ Bei `j`: weiter zu Phase 3.
 5. In den 4 Haupt-Files alle `<!-- Kommentare -->` loeschen — sie sind nur fuer
    den Template-Leser da, nicht fuer die produktive Datei. In
    `decisions/TEMPLATE.md` bleiben die Kommentare (sie fuehren durch ADRs).
+6. **Unterordner physisch anlegen** (aus Phase 1.5 abgeleitet):
+   - Fuer jeden Unterordner aus der bestaetigten Struktur: `mkdir -p <workspace>/<unterordner>/`
+   - Pro Unterordner eine leere `.gitkeep`-Datei anlegen, damit Git den leeren
+     Ordner trackt: `touch <workspace>/<unterordner>/.gitkeep`
+   - Bei Migrations-Modus: Unterordner nur anlegen wenn noch nicht vorhanden.
+     Existierende Unterordner unangetastet lassen, keine `.gitkeep` hinzufuegen.
 
 ### Phase 4: Qualitaets-Gates
 
